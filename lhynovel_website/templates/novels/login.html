@@ -1,0 +1,93 @@
+{% load static %}
+
+<head>
+    <link href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.css' %}" rel="stylesheet">
+</head>
+<body class="d-flex justify-content-center align-items-center" style="height: 100vh; background-color: #f4f7fc;">
+
+{% block content %}
+  <div class="card shadow-lg" style="width: 450px; border-radius: 15px;">
+    <div class="card-header d-flex align-items-center py-4" style="background-color: #767b81; color: white; border-radius: 15px 15px 0 0;">
+      <h3 class="flex-grow-1 mb-0">{{title}}</h3>
+      <a href="/" class="text-decoration-none text-white">返回首页</a>
+    </div>
+
+    <div class="card-body px-4 py-4">
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          {{ form.as_p }}  <!-- 用 Django 渲染表单 -->
+        </div>
+
+        <p class="my-3 text-danger">{{ error_msg }}</p>
+
+        <button type="submit" class="btn btn-success w-100 py-2" style="font-size: 16px; border-radius: 5px;">
+          用户登录
+        </button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+  }
+
+  .card {
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-header {
+    border-radius: 15px 15px 0 0;
+    font-size: 1.25rem;
+  }
+
+  .card-body {
+    padding: 20px;
+  }
+
+  .card-header a {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .card-body form {
+    font-size: 1rem;
+  }
+
+  .card-body .form-control {
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .my-3 {
+    font-size: 14px;
+  }
+
+  .btn-success {
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .btn-success:hover {
+    background-color: #3d868d;
+  }
+
+  .text-danger {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+  .w-100 {
+    width: 100% !important;
+  }
+
+  .shadow-lg {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+
+</style>

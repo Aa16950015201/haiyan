@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-5" style="font-family: 'Arial', sans-serif; font-size: 36px; color: #2c3e50; font-weight: 700;">{{ genre.name }} 分类</h1>
+
+        <div class="row">
+            {% for book in books %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-lg border-light" style="border-radius: 15px; overflow: hidden; transition: transform 0.3s ease-in-out;">
+                        {% if book.cover_image %}
+                            <img src="{{ book.cover_image.url }}" alt="{{ book.title }} 封面" class="card-img-top" style="height: 450px; object-fit: cover; border-bottom: 2px solid #ecf0f1;">
+                        {% else %}
+                            <div class="card-img-top" style="height: 250px; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; border-bottom: 2px solid #ecf0f1;">
+                                <span class="text-muted" style="font-size: 16px;">无封面</span>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 20px; font-weight: 600; color: #34495e; line-height: 1.3;">{{ book.title }}</h5>
+                            <p class="card-text text-muted" style="font-size: 14px; color: #7f8c8d;">{{ book.description|truncatewords:30 }}</p>
+                            <p class="text-muted" style="font-size: 14px; color: #7f8c8d;">作者：{{ book.author }}</p>
+                            <a href="{% url 'book_detail' book.id %}" class="btn btn-primary btn-sm" style="font-weight: bold; padding: 8px 20px; border-radius: 25px; transition: background-color 0.3s ease;">查看详情</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'genre_list' %}" class="btn btn-secondary btn-lg" style="font-size: 16px; padding: 10px 30px; border-radius: 25px; font-weight: bold; transition: background-color 0.3s ease;">返回分类列表</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    /* 增强卡片效果 */
+    .card:hover {
+        transform: translateY(-10px); /* 鼠标悬停时上浮效果 */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 按钮悬停效果 */
+    .btn-primary:hover {
+        background-color: #2980b9;
+        box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+    }
+
+    .btn-secondary:hover {
+        background-color: #7f8c8d;
+        box-shadow: 0 6px 12px rgba(127, 140, 141, 0.3);
+    }
+
+    /* 卡片的边框和阴影 */
+    .card {
+        border: none;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 卡片内容的文本颜色和间距 */
+    .card-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #34495e;
+    }
+
+    .card-text {
+        color: #7f8c8d;
+        font-size: 14px;
+    }
+
+    /* 图像无封面时的占位文字 */
+    .card-img-top span {
+        font-size: 16px;
+        color: #95a5a6;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}小说网站{% endblock %}</title>
+    <link
+      href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.css' %}"
+      rel="stylesheet"
+    />
+    {% block style %} {% endblock %}
+  </head>
+  <body>
+    <div class="d-flex flex-column vh-100">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a href="#" class="navbar-brand">风清小说管理</a>
+          <button
+            type="button"
+            class="navbar-toggler"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarCollapse"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse justify-content-between"
+            id="navbarCollapse"s
+          >
+            <div class="navbar-nav">
+              <a href="/" class="nav-item nav-link active">首页</a>
+              <a href="/genres" class="nav-item nav-link">分类</a>
+              <a href="/books" class="nav-item nav-link">书籍管理</a>
+              <a href="/my-books/" class="nav-item nav-link">我的书架</a>
+            </div>
+            <!-- <form class="d-flex">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" />
+                <button type="button" class="btn btn-secondary">
+                  <i class="bi-search"></i>
+                </button>
+              </div>
+            </form> -->
+             <!-- 搜索框 -->
+        <form method="GET" action="{% url 'search_books' %}">
+          <input type="text" name="q" placeholder="搜索书籍..." value="{{ request.GET.q }}">
+          <button type="submit">搜索</button>
+      </form>
+            <div class="navbar-nav">
+              <a href="/login/" class="nav-item nav-link">登录</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- 主要内容 -->
+      <main class="flex-grow-1">
+        <div class="container">
+          {% block content %}
+          <!-- 页面特定内容将在这里插入 -->
+          {% endblock %}</div>
+      </main>
+
+      <footer class="bg-secondary text-white text-center py-4 sticky-bottom">
+        <!-- 通用底部内容 -->
+        <!-- <div class="container"> -->
+        <p>&copy;风清小说城</p>
+        <!-- </div>   -->
+      </footer>
+    </div>
+    <script src="{% static 'bootstrap-5.3.3-dist/js/bootstrap.bundle.js' %}"></script>
+    {% block scripts %} {% endblock %}
+  </body>
+</html>

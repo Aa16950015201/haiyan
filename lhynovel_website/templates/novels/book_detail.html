@@ -1,0 +1,166 @@
+{% extends 'base.html' %} {% block style %}
+<style>
+  body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+  }
+  .book-cover {
+    max-width: 250px;
+    max-height: 350px;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+  .book-details {
+    margin-top: 30px;
+  }
+  .btn-add-to-bookshelf {
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 20px;
+  }
+  .btn-add-to-bookshelf:hover {
+    background-color: #218838;
+  }
+  .book-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #495057;
+  }
+  .comment-form {
+    margin-top: 20px;
+  }
+  .comment-list {
+    margin-top: 20px;
+  }
+  .comment-item {
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  .comment-item strong {
+    color: #007bff;
+  }
+  .chapter-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="container my-4 book-details">
+  <div class="row">
+    <!-- Book Cover and Title -->
+    <div class="col-md-4 text-center">
+      {% if book.cover_image %}
+      <img
+        src="{{ book.cover_image.url }}"
+        alt="{{ book.title }} Cover"
+        class="book-cover"
+      />
+      {% else %}
+      <img
+        src="https://via.placeholder.com/250x350?text=No+Cover"
+        alt="No Cover"
+        class="book-cover"
+      />
+      {% endif %}
+    </div>
+
+    <!-- Book Details -->
+    <div class="col-md-8">
+      <h1>{{ book.title }}</h1>
+      <p><strong>作者:</strong> {{ book.author }}</p>
+      <p><strong>类型:</strong> {{ book.genre.name }}</p>
+      <p class="book-description">{{ book.description }}</p>
+
+      <!-- Add to Bookshelf Button -->
+      {% if user.is_authenticated %}
+      {% if book_in_shelf %}
+                    <!-- Display Remove from Bookshelf button -->
+                    <a href="{% url 'remove_from_bookshelf' book.id %}" class="btn btn-danger">移除出书架</a>
+                {% else %}
+                    <!-- Display Add to Bookshelf button -->
+                    <a href="{% url 'add_to_bookshelf' book.id %}" class="btn btn-primary">添加到书架</a>
+                {% endif %}
+            {% else %}
+                <p>请 <a href="{% url 'login' %}">登录</a> 以添加或移除这本书。</p>
+            {% endif %}
+        </div>
+    </div>
+  </div>
+
+  <!-- Chapters Section -->
+  <div class="chapter-list">
+    <h3>章节</h3>
+    <div class="list-group">
+      {% for chapter in chapters %}
+      <div class="chapter-item">
+        <a href="{% url 'chapter_read' chapter.id %}" class="text-dark"
+          >{{ chapter.title }}</a
+        >
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- 评论区 -->
+  <div class="comment-list">
+    <h3>评论</h3>
+    <div class="list-group">
+      {% for comment in comments %}
+      <div class="comment-item">
+        <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
+        <p class="text-muted">
+          <small>{{ comment.created_at|date:"Y-m-d H:i" }}</small>
+        </p>
+        <!-- 显示评论时间 -->
+        {% if comment.user == user %}
+        <a
+          href="/book/{{book.id}}/?comment_id={{comment.id}}"
+          class="btn btn-warning btn-sm"
+          >编辑</a
+        >
+        <a
+          href="/comment/delete/{{comment.id}}/"
+          class="btn btn-danger btn-sm"
+          onclick="return confirm('确定删除这个评论吗？')"
+          >删除</a
+        >
+        {% endif %}
+      </div>
+      {% empty %}
+      <p>目前没有评论，快来发表评论吧！</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- 评论表单-->
+  {% if user.is_authenticated %}
+  <div class="comment-form">
+    <h4>{% if comment_id %}编辑评论{% else %}发表评论{% endif %}</h4>
+
+    {% if comment_id %}    
+    <form method="post" action="/edit_comment/{{comment_id}}/" >    
+    {% else %}    
+      <form method="post" action="/comment/add/{{book.id}}/" >    
+    {% endif %}  
+      {% csrf_token %} 
+      {{ form }}
+      <!-- 使用 Django 表单渲染 -->
+      <button type="submit" class="btn btn-primary">
+        {% if comment_id %}更新评论{% else %}发表评论{% endif %}
+      </button>
+    </form>
+  </div>
+  {% else %}
+  <p>请先 <a href="{% url 'login' %}">登录</a> 以发表评论。</p>
+  {% endif %} {% endblock %}
+</div>

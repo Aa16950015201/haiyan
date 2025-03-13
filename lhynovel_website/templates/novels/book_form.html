@@ -1,0 +1,83 @@
+{% load static %}
+<head>
+    <link href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.css' %}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #343a40;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 20px;
+        }
+        .card-body {
+            background-color: #ffffff;
+            padding: 30px;
+        }
+        .card-footer {
+            background-color: #ffffff;
+            text-align: center;
+            padding: 10px;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-control {
+            border-radius: 5px;
+            box-shadow: none;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                {% if form.instance.pk %}编辑书籍{% else %}添加新书籍{% endif %}
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">提交</button>
+                </form>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'book_list' %}" class="btn btn-secondary">返回书籍列表</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

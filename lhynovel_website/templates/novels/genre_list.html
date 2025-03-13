@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container my-5">
+    <h1 class="text-center page-title mb-4">小说分类</h1>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for genre in genres %}
+        <div class="col">
+          <a class="genre-link text-decoration-none" href="{% url 'genre_detail' genre.id %}">
+            <div class="genre-card card shadow-sm rounded">
+              <div class="card-body">
+                <h3 class="genre-name card-title text-center">{{ genre.name }}</h3>
+                <p class="genre-description text-center text-muted">点击查看更多</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% load static %}
+<head>
+    <link href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.css' %}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #343a40;
+            color: white;
+            font-size: 1.5rem;
+        }
+        .card-body {
+            background-color: #ffffff;
+            padding: 30px;
+        }
+        .card-footer {
+            background-color: #ffffff;
+            border-top: 1px solid #e5e5e5;
+            text-align: center;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #c82333;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+        .confirmation-text {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            确认删除书籍
+        </div>
+        <div class="card-body">
+            <p class="confirmation-text">你确定要删除书籍 <strong>"{{ book.title }}"</strong> 吗？</p>
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-lg">确认删除</button>
+            </form>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'book_list' %}" class="btn btn-secondary btn-lg">取消</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
